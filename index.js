@@ -3,7 +3,7 @@ const pseudoAppointments = [["22.07.06", "1. Chlausi Höck"], ["01.05.08", "2. H
 const pseudoCamps = [{"name":"Chlausi 2023", "title":"Chaos auf der Nostromo"}, {"name":"HeLa 2023", "title":"In einer weit entfernten Galaxis..."}, {"name":"SoLa 2024", "title":"Men in Black"}, {"name":"PfiLa 2024", "title":"The Blues Brothers"}, {"name":"Chlausi 2024", "title":"2001: Ein Weltraumlager"}]
 
 //################################################### local storage #####################################
-
+// test
 function initLocalStorage() {
     if (localStorage.length === 0) {
         localStorage.setItem("todos", "[]")
