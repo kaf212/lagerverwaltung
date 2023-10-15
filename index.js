@@ -12,6 +12,14 @@ function initLocalStorage() {
     }
 }
 
+function resetLocalStorage() {
+    for (const key in localStorage) {
+        localStorage.removeItem(key)
+    }
+    initLocalStorage()
+}
+
+
 initLocalStorage()
 
 //#######################################################################################################
@@ -34,14 +42,15 @@ function readTodo(todo) {
     localStorage.getItem(todo.title)
 }
 function renderTodoPreview() {
-    console.log(document.getElementById("main-todo-container").getElementsByTagName("tr"))
-    for (const elem of document.getElementById("main-todo-container").getElementsByTagName("tr")) {
+    const todoElements = document.getElementById("main-todo-container").getElementsByTagName("tr")
+    for (const elem of todoElements) {
+        console.log("hello world")
         elem.remove()
     }
-    getAllTodos().forEach((todo) => {
-        addNewTodo(todo)
+    for (const todo of getAllTodos()) {
+        addNewTodo(todo, false, false)
+    }
 
-    })
 }
 
 
@@ -81,9 +90,9 @@ function renderCampPreviews() {
 }
 
 
-function addNewTodo(todoObject, isDone) {
+function addNewTodo(todoObject, isDone, writeToStorage) {
 
-    writeTodo(todoObject) //
+    if (writeToStorage) {writeTodo(todoObject)}
 
     let table = document.getElementById("todos")
     if (isDone) {table = document.getElementById("doneTodos")}
@@ -155,7 +164,7 @@ function handleTodoModalSubmit(event) {
     const todoName = formData.get("todoName")
     const todoCamp = formData.get("todoCamp")
     const todoObj = {"title": todoName, "camp": todoCamp}
-    addNewTodo(todoObj, false)
+    addNewTodo(todoObj, false, true)
 
     const modal = form.parentElement.parentElement
     modal.classList.add("hidden")
