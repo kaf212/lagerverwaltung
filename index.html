@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang='de-CH'>
+<head>
+  <meta charset='UTF-8'>
+  <link rel='stylesheet' href='main.css'>
+  <script src='index.js' type='module' defer></script>
+  <title>Lagerverwaltung</title>
+</head>
+<body>
+<div class='modal hidden' id='todoModal'>
+  <div class='modal-content'>
+    <h2 class='modal-title'>Neues Todo</h2>
+    <form action='' name='todoModalForm' class='modal-form'>
+      <label for='modalFormTodoName'>Titel:</label><br>
+      <input type='text' id='modalFormTodoName' name='todoName' autocomplete='false'><br><br>
+
+      <label for='modalFormTodoCamp'>Lager:</label><br>
+      <select id='modalFormTodoCamp' name='todoCamp'>
+        <!-- options are added dynamically in JS -->
+        <option value=''></option>
+      </select><br><br>
+      <button class='modal-abort-button' type='reset'>Abbrechen</button>
+      <button type='submit'>Speichern</button>
+    </form>
+  </div>
+</div>
+<header>
+  <nav>
+    <div class='lv-menu-div'>
+      <div class='lv-menu-option' id='newTodo'>
+        <span>Neues ToDo</span>
+      </div>
+      <div class='lv-menu-option' id='newCamp'>
+        <span>Neues Lager</span>
+      </div>
+      <div class='lv-menu-option' id='newAppointment'>
+        <span>Neuer Termin</span>
+      </div>
+      <div class='lv-menu-option' id='newHock'>
+        <span>Neuer Höck</span>
+      </div>
+
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class='main-options-container'>
+    <div class='lv-start-container lv-todos' id='main-todo-container'>
+      <h2>ToDos</h2>
+      <table id='todos'></table>
+      <h3>Erledigt:</h3>
+      <table id='doneTodos'></table>
+    </div>
+    <div class='lv-start-container lv-appointments'>
+      <h2>Höcks & Termine</h2>
+      <table id='appointments'></table>
+    </div>
+  </div>
+  <div id='main-camps-container'>
+
+  </div>
+
+</main>
+
+<footer>
+</footer>
+
+</body>
+</html>
