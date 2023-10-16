@@ -41,6 +41,17 @@ function editTodoInStorage(id, attribute, value) {
 
 }
 
+function deleteTodoFromStorage(id) {
+    const todoJson = getAllTodos()
+    for (const todo of todoJson) {
+        if (todo.id == id) {
+            todoJson.splice(todoJson.indexOf(todo), 1)
+        }
+    }
+    localStorage.setItem("todos", JSON.stringify(todoJson))
+
+}
+
 
 initLocalStorage()
 
@@ -50,6 +61,9 @@ initLocalStorage()
 
 function openContextMenu(event) {
     event.preventDefault()
+    const targetElement = document.elementFromPoint(event.clientX, event.clientY).closest("tr"); // Get the element at the click position
+    console.log(targetElement)
+    console.log(targetElement.id)
     const contextMenu = document.getElementById("todoContextMenu")
     contextMenu.style.left = event.pageX + 'px';
     contextMenu.style.top = event.pageY + 'px';
@@ -58,11 +72,26 @@ function openContextMenu(event) {
     document.addEventListener("click", () => {
         contextMenu.style.display = "none"
     })
+    addContextMenuEventListeners(targetElement)
 }
 
 
 
+function addContextMenuEventListeners(targetElement) {
+    console.log(targetElement)
+    for (const option of document.getElementsByClassName("context-menu-option-todo")) {
+        if (option.classList.contains("context-menu-option-todo-delete")) {
+            option.addEventListener("click", (event) => {
+                deleteTodoFromStorage(targetElement.id)
+                targetElement.remove()
+            })
+        }
+    }
+}
+
+
 // ##########################################################################################################
+
 
 function getAllTodos() {
     return JSON.parse(localStorage.getItem("todos"))
