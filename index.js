@@ -46,6 +46,24 @@ initLocalStorage()
 
 //#######################################################################################################
 
+// ############################################### context menu #############################################
+
+function openContextMenu(event) {
+    event.preventDefault()
+    const contextMenu = document.getElementById("todoContextMenu")
+    contextMenu.style.left = event.pageX + 'px';
+    contextMenu.style.top = event.pageY + 'px';
+    contextMenu.style.display = "block"
+
+    document.addEventListener("click", () => {
+        contextMenu.style.display = "none"
+    })
+}
+
+
+
+// ##########################################################################################################
+
 function getAllTodos() {
     return JSON.parse(localStorage.getItem("todos"))
 }
@@ -200,6 +218,9 @@ function createTodoElement(isDone) {
     tds[0].append(checkBox)
     tds[0].append(document.createElement("span"))
     tds[1].append(document.createElement("span"))
+
+    tr.addEventListener("contextmenu", openContextMenu)
+
     return tr
 }
 function addNewTodoUI() {
@@ -260,6 +281,10 @@ addModalEventListeners()
 loadCampsIntoModals()
 
 // ##########################################################################################################
+
+
+
+
 
 
 //################################################### DEBUGGING #########################################
