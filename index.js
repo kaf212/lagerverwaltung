@@ -44,11 +44,10 @@ function readTodo(todo) {
 function renderTodoPreview() {
     const todoElements = document.getElementById("main-todo-container").getElementsByTagName("tr")
     for (const elem of todoElements) {
-        console.log("hello world")
         elem.remove()
     }
     for (const todo of getAllTodos()) {
-        addNewTodo(todo, false, false)
+        addNewTodo(todo, false)
     }
 
 }
@@ -90,15 +89,16 @@ function renderCampPreviews() {
 }
 
 
-function addNewTodo(todoObject, isDone, writeToStorage) {
+function addNewTodo(todoObject, writeToStorage) {
 
     if (writeToStorage) {writeTodo(todoObject)}
 
     let table = document.getElementById("todos")
-    if (isDone) {table = document.getElementById("doneTodos")}
+    if (todoObject.done === true) {table = document.getElementById("doneTodos")}
 
 
     const newTodoElement = createTodoElement()
+    newTodoElement.setAttribute("id", todoObject.id)
 
     newTodoElement.getElementsByTagName("span")[0].innerText = todoObject.title
     newTodoElement.getElementsByTagName("span")[1].innerText = todoObject.camp
@@ -126,6 +126,26 @@ function markTodoDone(event) {
     checkbox.checked = true
     checkbox.addEventListener("click", reOpenTodo)
     doneTable.append(element)
+}
+
+function generateTodoId() {
+    debugger
+    const todos = getAllTodos()
+    if (todos === 0) {
+        return "0"
+    }
+    let maxIdValue = 0
+    for (const key in todos) {
+        const currentTodo = todos[key]
+        if (Number(currentTodo.id) === maxIdValue) {
+            maxIdValue = Number(currentTodo.id) + 1
+        }
+        if (Number(currentTodo.id) > maxIdValue) {
+            maxIdValue = Number(currentTodo.id) + 2
+        }
+
+    }
+    return String(maxIdValue)
 }
 
 function createTodoElement() {
@@ -163,8 +183,8 @@ function handleTodoModalSubmit(event) {
     const formData = new FormData(form)
     const todoName = formData.get("todoName")
     const todoCamp = formData.get("todoCamp")
-    const todoObj = {"title": todoName, "camp": todoCamp}
-    addNewTodo(todoObj, false, true)
+    const todoObj = {"id": generateTodoId(), "title": todoName, "camp": todoCamp, "done": false}
+    addNewTodo(todoObj, true)
 
     const modal = form.parentElement.parentElement
     modal.classList.add("hidden")
