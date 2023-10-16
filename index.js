@@ -2,6 +2,9 @@ const pseudoTodos = [{"title":"Chuchi sueche", "camp":"Chlausi 2023"}, {"title":
 const pseudoAppointments = [["22.07.06", "1. Chlausi Höck"], ["01.05.08", "2. HeLa Höck"], ["24.02.06", "Druck abhole"]]
 const pseudoCamps = [{"name":"Chlausi 2023", "title":"Chaos auf der Nostromo"}, {"name":"HeLa 2023", "title":"In einer weit entfernten Galaxis..."}, {"name":"SoLa 2024", "title":"Men in Black"}, {"name":"PfiLa 2024", "title":"The Blues Brothers"}, {"name":"Chlausi 2024", "title":"2001: Ein Weltraumlager"}]
 
+
+
+
 //################################################### local storage #####################################
 // test
 function initLocalStorage() {
@@ -18,6 +21,16 @@ function resetLocalStorage() {
     }
     initLocalStorage()
 }
+
+function getTodoFromStorageById(id) {
+    for (const item of getAllTodos()) {
+        if (item.id === id) {
+            return item
+        }
+    }
+}
+
+
 
 
 initLocalStorage()
@@ -122,6 +135,10 @@ function markTodoDone(event) {
     const checkbox = event.currentTarget
     const element = checkbox.parentElement.parentElement
     const doneTable = document.getElementById("doneTodos")
+
+    const todoObj = getTodoFromStorageById(element.id)
+    todoObj.done = true
+
     checkbox.removeEventListener("click", markTodoDone)
     checkbox.checked = true
     checkbox.addEventListener("click", reOpenTodo)
@@ -219,3 +236,20 @@ addModalEventListeners()
 loadCampsIntoModals()
 
 // ##########################################################################################################
+
+
+//################################################### DEBUGGING #########################################
+
+document.getElementById("debugButtonGetAllTodos").addEventListener("click", () => {
+    for (const todo of getAllTodos()) {
+        console.log(todo)
+    }
+    if (getAllTodos().length === 0) {
+        console.log("No todos in storage")
+    }
+})
+
+document.getElementById("debugButtonResetStorage").addEventListener("click", resetLocalStorage)
+
+
+//#######################################################################################################
