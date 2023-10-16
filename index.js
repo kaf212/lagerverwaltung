@@ -30,7 +30,16 @@ function getTodoFromStorageById(id) {
     }
 }
 
+function editTodoInStorage(id, attribute, value) {
+    const todoJson = getAllTodos()
+    for (const todo of todoJson) {
+        if (todo.id == id) {
+            todo[attribute] = value
+        }
+    }
+    localStorage.setItem("todos", JSON.stringify(todoJson))
 
+}
 
 
 initLocalStorage()
@@ -107,10 +116,15 @@ function addNewTodo(todoObject, writeToStorage) {
     if (writeToStorage) {writeTodo(todoObject)}
 
     let table = document.getElementById("todos")
-    if (todoObject.done === true) {table = document.getElementById("doneTodos")}
+
+    let isDone = false
+    if (todoObject.done === true) {
+        table = document.getElementById("doneTodos")
+        isDone = true
+    }
 
 
-    const newTodoElement = createTodoElement()
+    const newTodoElement = createTodoElement(isDone)
     newTodoElement.setAttribute("id", todoObject.id)
 
     newTodoElement.getElementsByTagName("span")[0].innerText = todoObject.title
@@ -129,15 +143,18 @@ function reOpenTodo(event) {
     checkbox.checked = false
     checkbox.addEventListener("click", markTodoDone)
     table.append(element)
+    editTodoInStorage(element.id, "done", false)
+
 }
+
+
 
 function markTodoDone(event) {
     const checkbox = event.currentTarget
     const element = checkbox.parentElement.parentElement
     const doneTable = document.getElementById("doneTodos")
 
-    const todoObj = getTodoFromStorageById(element.id)
-    todoObj.done = true
+    editTodoInStorage(element.id, "done", true)
 
     checkbox.removeEventListener("click", markTodoDone)
     checkbox.checked = true
@@ -165,11 +182,18 @@ function generateTodoId() {
     return String(maxIdValue)
 }
 
-function createTodoElement() {
+function createTodoElement(isDone) {
     const tr = document.createElement("tr")
     const checkBox = document.createElement("input")
     checkBox.setAttribute("type", "checkbox")
-    checkBox.addEventListener("click", markTodoDone)
+    if (isDone) {
+        checkBox.checked = true
+        checkBox.addEventListener("click", reOpenTodo)
+    }
+    else {
+        checkBox.addEventListener("click", markTodoDone)
+    }
+
     tr.append(document.createElement("td"))
     tr.append(document.createElement("td"))
     const tds = tr.getElementsByTagName("td")
