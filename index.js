@@ -81,9 +81,20 @@ function addContextMenuEventListeners(targetElement) {
     console.log(targetElement)
     for (const option of document.getElementsByClassName("context-menu-option-todo")) {
         if (option.classList.contains("context-menu-option-todo-delete")) {
-            option.addEventListener("click", (event) => {
+            option.addEventListener("click", () => {
                 deleteTodoFromStorage(targetElement.id)
                 targetElement.remove()
+            })
+        }
+
+        else if (option.classList.contains("context-menu-option-todo-edit")) {
+            option.addEventListener("click", () => {
+                addNewTodoUI()
+                const todoObj = getTodoFromStorageById(targetElement.id)
+                console.log(todoObj)
+                document.getElementById("modalFormTodoName").setAttribute("value", todoObj.title)
+                document.getElementById("modalFormTodoCamp").setAttribute("value", todoObj.camp)
+
             })
         }
     }
@@ -210,7 +221,6 @@ function markTodoDone(event) {
 }
 
 function generateTodoId() {
-    debugger
     const todos = getAllTodos()
     if (todos === 0) {
         return "0"
@@ -252,7 +262,19 @@ function createTodoElement(isDone) {
 
     return tr
 }
+
+function resetTodoModal() {
+    Array.from(document.getElementById("todoModal").getElementsByTagName("input")).forEach((element) => {
+        element.removeAttribute("value")
+    })
+    Array.from(document.getElementById("todoModal").getElementsByTagName("select")).forEach((element) => {
+        element.removeAttribute("value")
+    })
+
+}
+
 function addNewTodoUI() {
+    resetTodoModal()
     document.getElementById("todoModal").classList.remove("hidden")
 }
 

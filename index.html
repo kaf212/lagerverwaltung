@@ -18,12 +18,11 @@
     <h2 class='modal-title'>Neues Todo</h2>
     <form action='' name='todoModalForm' class='modal-form'>
       <label for='modalFormTodoName'>Titel:</label><br>
-      <input type='text' id='modalFormTodoName' name='todoName' autocomplete='false'><br><br>
+      <input type='text' id='modalFormTodoName' name='todoName' autocomplete='off' required><br><br>
 
       <label for='modalFormTodoCamp'>Lager:</label><br>
       <select id='modalFormTodoCamp' name='todoCamp'>
         <!-- options are added dynamically in JS -->
-        <option value=''></option>
       </select><br><br>
       <button class='modal-abort-button' type='reset'>Abbrechen</button>
       <button type='submit'>Speichern</button>
@@ -47,6 +46,7 @@
       </div>
 
     </div>
+    <img src="img/lepanto.png" alt="Lepanto" id="lepantoImg">
   </nav>
 </header>
 

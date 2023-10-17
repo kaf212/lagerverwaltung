@@ -1,4 +1,6 @@
-
+html {
+    background-color: gray;
+}
 body {
     margin: 0;
     font-family: Arial,serif;
@@ -10,6 +12,13 @@ nav {
     display: flex;
     justify-content: center;
 
+}
+
+#lepantoImg {
+    position: absolute;
+    right: 0;
+    height: 13vh;
+    margin: 1vh 1vh 0 0;
 }
 
 .lv-menu-div {
@@ -146,3 +155,5 @@ tr:hover {
 .context-menu-option:hover {
     background-color: #a6a6a6;
 }
+
+
