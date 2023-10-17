@@ -59,6 +59,7 @@ initLocalStorage()
 
 // ############################################### context menu #############################################
 
+
 function openContextMenu(event) {
     event.preventDefault()
     const targetElement = document.elementFromPoint(event.clientX, event.clientY).closest("tr"); // Get the element at the click position
@@ -75,20 +76,19 @@ function openContextMenu(event) {
     addContextMenuEventListeners(targetElement)
 }
 
-
-
 function addContextMenuEventListeners(targetElement) {
-    console.log(targetElement)
+    // it is essential, that the onclick attribute is used and not the addEventListener method, because else, the
+    // old eventListeners persist and delete every element that has been rightclicked!
     for (const option of document.getElementsByClassName("context-menu-option-todo")) {
         if (option.classList.contains("context-menu-option-todo-delete")) {
-            option.addEventListener("click", () => {
+            option.onclick = () => {
                 deleteTodoFromStorage(targetElement.id)
                 targetElement.remove()
-            })
+            }
         }
 
         else if (option.classList.contains("context-menu-option-todo-edit")) {
-            option.addEventListener("click", () => {
+            option.onclick = () => {
                 addNewTodoUI()
                 const todoObj = getTodoFromStorageById(targetElement.id)
                 console.log(todoObj)
@@ -99,7 +99,7 @@ function addContextMenuEventListeners(targetElement) {
                 editTodoInStorage(Number(originalId)+1, "id", originalId)
                 renderTodoPreview()
 
-            })
+            }
         }
     }
 }
@@ -280,6 +280,7 @@ function resetTodoModal() {
 function addNewTodoUI() {
     resetTodoModal()
     document.getElementById("todoModal").classList.remove("hidden")
+    document.getElementById("modalFormTodoName").focus()
 }
 
 function addMainEventListeners() {
