@@ -94,6 +94,10 @@ function addContextMenuEventListeners(targetElement) {
                 console.log(todoObj)
                 document.getElementById("modalFormTodoName").setAttribute("value", todoObj.title)
                 document.getElementById("modalFormTodoCamp").setAttribute("value", todoObj.camp)
+                const originalId = todoObj.id
+                deleteTodoFromStorage(originalId)
+                editTodoInStorage(Number(originalId)+1, "id", originalId)
+                renderTodoPreview()
 
             })
         }
@@ -123,9 +127,9 @@ function readTodo(todo) {
 }
 function renderTodoPreview() {
     const todoElements = document.getElementById("main-todo-container").getElementsByTagName("tr")
-    for (const elem of todoElements) {
-        elem.remove()
-    }
+    Array.from(todoElements).forEach((element) => {
+        element.remove()
+    })
     for (const todo of getAllTodos()) {
         addNewTodo(todo, false)
     }
@@ -296,6 +300,8 @@ function handleTodoModalSubmit(event) {
     const formData = new FormData(form)
     const todoName = formData.get("todoName")
     const todoCamp = formData.get("todoCamp")
+    debugger
+    console.log("test")
     const todoObj = {"id": generateTodoId(), "title": todoName, "camp": todoCamp, "done": false}
     addNewTodo(todoObj, true)
 
