@@ -101,12 +101,6 @@ function addContextMenuEventListeners(targetElement) {
 
                 addNewTodoUI()
                 const todoObj = getTodoFromStorageById(targetElement.id)
-                document.getElementById("todoModalAbortButton").addEventListener("click", () => {
-                    if (JSON.stringify(getTodoFromStorageById(todoObj.id)) !== JSON.stringify(todoObj)) {
-                        addNewTodo(todoObj, true)
-                    }
-                }) //todo remove this eventlistener when appropriate
-                console.log(todoObj)
                 document.getElementById("modalFormTodoName").setAttribute("value", todoObj.title)
                 document.getElementById("modalFormTodoCamp").setAttribute("value", todoObj.camp)
                 document.forms.todoModalForm.addEventListener("submit", () => {
