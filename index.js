@@ -2,7 +2,11 @@ const pseudoTodos = [{"title":"Chuchi sueche", "camp":"Chlausi 2023"}, {"title":
 const pseudoAppointments = [["22.07.06", "1. Chlausi Höck"], ["01.05.08", "2. HeLa Höck"], ["24.02.06", "Druck abhole"]]
 const pseudoCamps = [{"name":"Chlausi 2023", "title":"Chaos auf der Nostromo"}, {"name":"HeLa 2023", "title":"In einer weit entfernten Galaxis..."}, {"name":"SoLa 2024", "title":"Men in Black"}, {"name":"PfiLa 2024", "title":"The Blues Brothers"}, {"name":"Chlausi 2024", "title":"2001: Ein Weltraumlager"}]
 
+//############### global variables ####################
 
+let currentlyEditingTodo = false
+
+//#####################################################
 
 
 //################################################### local storage #####################################
@@ -52,6 +56,10 @@ function deleteTodoFromStorage(id) {
 
 }
 
+function getNumberOfTodosInStorage() {
+    return JSON.parse(localStorage.getItem("todos")).length + 1
+}
+
 
 initLocalStorage()
 
@@ -89,15 +97,24 @@ function addContextMenuEventListeners(targetElement) {
 
         else if (option.classList.contains("context-menu-option-todo-edit")) {
             option.onclick = () => {
+                const todoCount = getNumberOfTodosInStorage()
+
                 addNewTodoUI()
                 const todoObj = getTodoFromStorageById(targetElement.id)
+                document.getElementById("todoModalAbortButton").addEventListener("click", () => {
+                    if (JSON.stringify(getTodoFromStorageById(todoObj.id)) !== JSON.stringify(todoObj)) {
+                        addNewTodo(todoObj, true)
+                    }
+                }) //todo remove this eventlistener when appropriate
                 console.log(todoObj)
                 document.getElementById("modalFormTodoName").setAttribute("value", todoObj.title)
                 document.getElementById("modalFormTodoCamp").setAttribute("value", todoObj.camp)
-                const originalId = todoObj.id
-                deleteTodoFromStorage(originalId)
-                editTodoInStorage(Number(originalId)+1, "id", originalId)
-                renderTodoPreview()
+                document.forms.todoModalForm.addEventListener("submit", () => {
+                    const originalId = todoObj.id
+                    deleteTodoFromStorage(originalId)
+                    editTodoInStorage(Number(originalId)+1, "id", originalId)
+                    renderTodoPreview()
+                })
 
             }
         }
