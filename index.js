@@ -268,12 +268,16 @@ function createTodoElement(isDone) {
 }
 
 function resetTodoModal() {
+    /*
     Array.from(document.getElementById("todoModal").getElementsByTagName("input")).forEach((element) => {
         element.removeAttribute("value")
     })
     Array.from(document.getElementById("todoModal").getElementsByTagName("select")).forEach((element) => {
         element.removeAttribute("value")
     })
+    */
+
+    document.forms.todoModalForm.reset()
 
 }
 
@@ -285,7 +289,9 @@ function addNewTodoUI() {
 
 function addMainEventListeners() {
     document.getElementById("newTodo").addEventListener("click", addNewTodoUI)
-}
+
+    }
+
 
 // ---- main function calls ----
 
@@ -301,7 +307,6 @@ function handleTodoModalSubmit(event) {
     const formData = new FormData(form)
     const todoName = formData.get("todoName")
     const todoCamp = formData.get("todoCamp")
-    debugger
     console.log("test")
     const todoObj = {"id": generateTodoId(), "title": todoName, "camp": todoCamp, "done": false}
     addNewTodo(todoObj, true)
