@@ -13,15 +13,16 @@
   <span class="context-menu-option  context-menu-option-todo  context-menu-option-todo-delete" style="color: darkred;">&nbsp;&nbsp;&#x1F5D1; Löschen</span>
 </div>
 
+<!-- IMPORTANT: INPUT TAG NAME ATTRIBUTE MUST ALWAYS BE THE SAME AS OBJECT ATTRIBUTES NAMES, ELSE SHIT BREAKS! -->
 <div class='modal hidden' id='todoModal'>
   <div class='modal-content'>
     <h2 class='modal-title'>Neues Todo</h2>
     <form action='' name='todoModalForm' class='modal-form'>
       <label for='modalFormTodoName'>Titel:</label><br>
-      <input type='text' id='modalFormTodoName' name='todoName' autocomplete='off' required><br><br>
+      <input type='text' id='modalFormTodoName' name="title" autocomplete='off' required><br><br>
 
       <label for='modalFormTodoCamp'>Lager:</label><br>
-      <select id='modalFormTodoCamp' name='todoCamp'>
+      <select id='modalFormTodoCamp' name="camp" class="modal-camplist">
         <!-- options are added dynamically in JS -->
       </select><br><br>
       <button  id="todoModalAbortButton" class='modal-abort-button' type='reset'>Abbrechen</button>
@@ -29,6 +30,27 @@
     </form>
   </div>
 </div>
+
+<div class='modal hidden' id='appointmentModal'>
+  <div class='modal-content'>
+    <h2 class='modal-title'>Neuer Termin</h2>
+    <form action='' name='appointmentModalForm' class='modal-form'>
+      <label for='modalFormAppointmentName'>Titel:</label><br>
+      <input type='text' id='modalFormAppointmentName' name='todoName' autocomplete='off' required><br><br>
+
+      <label for="modalFormAppointmentDate">Datum:</label>
+      <input type="date" id="modalFormAppointmentDate">
+
+      <label for='modalFormAppointmentCamp'>Lager:</label><br>
+      <select id='modalFormAppointmentCamp' name='appointmentCamp' class="modal-camplist">
+        <!-- options are added dynamically in JS -->
+      </select><br><br>
+      <button  id="AppointmentModalAbortButton" class='modal-abort-button' type='reset'>Abbrechen</button>
+      <button type='submit'>Speichern</button>
+    </form>
+  </div>
+</div>
+
 <header>
   <nav>
     <div class='lv-menu-div'>

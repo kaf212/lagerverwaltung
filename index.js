@@ -4,7 +4,7 @@ const pseudoCamps = [{"name":"Chlausi 2023", "title":"Chaos auf der Nostromo"}, 
 
 //############### global variables ####################
 
-let currentlyEditingTodo = false
+const todoObjectAttributes = ["title", "camp"]
 
 //#####################################################
 
@@ -97,18 +97,28 @@ function addContextMenuEventListeners(targetElement) {
 
         else if (option.classList.contains("context-menu-option-todo-edit")) {
             option.onclick = () => {
-                const todoCount = getNumberOfTodosInStorage()
-
                 addNewTodoUI()
                 const todoObj = getTodoFromStorageById(targetElement.id)
                 document.getElementById("modalFormTodoName").setAttribute("value", todoObj.title)
                 document.getElementById("modalFormTodoCamp").setAttribute("value", todoObj.camp)
-                document.forms.todoModalForm.addEventListener("submit", () => {
+                // set the modal submit behaviour to not create a new element
+                const modalForm = document.forms.todoModalForm
+                modalForm.onsubmit = () => {
+                    const data = new FormData(modalForm)
+                    const id = todoObj.id
+                    todoObjectAttributes.forEach((attribute) => {
+                        editTodoInStorage(id, attribute, data.get(attribute))
+                    })
+                    /*
                     const originalId = todoObj.id
                     deleteTodoFromStorage(originalId)
                     editTodoInStorage(Number(originalId)+1, "id", originalId)
                     renderTodoPreview()
-                })
+
+                     */
+                    // Set the eventListener back to default behaviour
+                    document.forms.todoModalForm.onsubmit = handleTodoModalSubmit
+                }
 
             }
         }
@@ -118,6 +128,7 @@ function addContextMenuEventListeners(targetElement) {
 
 // ##########################################################################################################
 
+// ############################################### todos #####################################################
 
 function getAllTodos() {
     return JSON.parse(localStorage.getItem("todos"))
@@ -301,8 +312,18 @@ function addNewTodoUI() {
 function addMainEventListeners() {
     document.getElementById("newTodo").addEventListener("click", addNewTodoUI)
 
-    }
+    document.getElementById("newAppointment").addEventListener("click", addNewAppointmentUI)
 
+    }
+// ##########################################################################################################
+
+//################################################## appointments ###########################################
+
+function addNewAppointmentUI() {
+    document.getElementById("appointmentModal").classList.remove("hidden")
+}
+
+// ##########################################################################################################
 
 // ---- main function calls ----
 
@@ -316,8 +337,8 @@ function handleTodoModalSubmit(event) {
     event.preventDefault()
     const form = event.currentTarget
     const formData = new FormData(form)
-    const todoName = formData.get("todoName")
-    const todoCamp = formData.get("todoCamp")
+    const todoName = formData.get("title")
+    const todoCamp = formData.get("camp")
     console.log("test")
     const todoObj = {"id": generateTodoId(), "title": todoName, "camp": todoCamp, "done": false}
     addNewTodo(todoObj, true)
@@ -328,7 +349,7 @@ function handleTodoModalSubmit(event) {
 
 function addModalEventListeners() {
     Array.from(document.getElementsByClassName("modal-form")).forEach((form) => {
-        form.addEventListener("submit", handleTodoModalSubmit)
+        form.onsubmit = handleTodoModalSubmit // todo change back to addEventListener when fix failed
     })
 
     Array.from(document.getElementsByClassName("modal-abort-button")).forEach((button) => {
@@ -337,16 +358,20 @@ function addModalEventListeners() {
             buttonElem.parentElement.parentElement.parentElement.classList.add("hidden")
         })
     })
+
+
 }
 
 
 function loadCampsIntoModals() {
-    const todoCampsSelectElem = document.getElementById("modalFormTodoCamp")
-    getAllCamps().forEach((camp) => {
-        const option = document.createElement("option")
-        option.setAttribute("value", camp.name)
-        option.innerText = camp.name
-        todoCampsSelectElem.append(option)
+    debugger
+    Array.from(document.getElementsByClassName("modal-camplist")).forEach((elem) => {
+        getAllCamps().forEach((camp) => {
+            const option = document.createElement("option")
+            option.setAttribute("value", camp.name)
+            option.innerText = camp.name
+            elem.append(option)
+        })
     })
 }
 
